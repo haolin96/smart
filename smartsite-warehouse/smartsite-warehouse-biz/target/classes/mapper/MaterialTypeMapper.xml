@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mitesofor.smartsite.warehouse.biz.mapper.MaterialTypeMapper">
+
+  <resultMap id="meterialTypeMap" type="com.mitesofor.smartsite.warehouse.api.entity.MaterialType">
+                  <id property="id" column="id"/>
+                        <result property="parentId" column="parent_id"/>
+                        <result property="name" column="name"/>
+            </resultMap>
+
+    <select id="selectTypeByPage" resultType="com.mitesofor.smartsite.warehouse.api.entity.MaterialType">
+        select * from b_material_type where parent_id = 0
+        <if test="dto.id!=null">
+            and id = #{dto.id}
+        </if>
+        <if test="dto.parentId!=null">
+            and parent_id = #{dto.parentId}
+        </if>
+        <if test="dto.name!=null and dto.name!=''">
+            and name like concat('%',concat(#{dto.name},'%'))
+        </if>
+    </select>
+    
+    <select id="selectSubTypeByParentId"
+            resultType="com.mitesofor.smartsite.warehouse.api.entity.MaterialType">
+        select * from b_material_type
+        <where>
+            <if test="parentId!=null and parentId!=''">
+                and parent_id=#{parentId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectTypeByList" resultType="com.mitesofor.smartsite.warehouse.api.entity.MaterialType">
+        select * from b_material_type where parent_id = 0
+        <if test="dto.id!=null">
+            and id = #{dto.id}
+        </if>
+        <if test="dto.name!=null and dto.name!=''">
+            and name like concat('%',concat(#{dto.name},'%'))
+        </if>
+    </select>
+</mapper>

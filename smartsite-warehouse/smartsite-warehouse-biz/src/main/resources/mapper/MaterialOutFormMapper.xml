@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mitesofor.smartsite.warehouse.biz.mapper.MaterialOutFormMapper">
+
+  <resultMap id="materialOutFormMap" type="com.mitesofor.smartsite.warehouse.api.entity.MaterialOutForm">
+                  <id property="id" column="id"/>
+                        <result property="materialId" column="material_id"/>
+                        <result property="number" column="number"/>
+                        <result property="remark" column="remark"/>
+                        <result property="applicant" column="applicant"/>
+                        <result property="applicantId" column="applicant_id"/>
+                        <result property="reviewer" column="reviewer"/>
+                        <result property="reviewState" column="review_state"/>
+                        <result property="reviewerId" column="reviewer_id"/>
+                        <result property="reviewTime" column="review_time"/>
+                        <result property="proId" column="pro_id"/>
+                        <result property="outFormTime" column="out_form_time"/>
+                        <result property="createBy" column="create_by"/>
+                        <result property="createTime" column="create_time"/>
+                        <result property="updateBy" column="update_by"/>
+                        <result property="updateTime" column="update_time"/>
+  </resultMap>
+
+    <select id="getMaterialOutFormPage"
+            resultType="com.mitesofor.smartsite.warehouse.api.entity.MaterialOutForm">
+        select f.* from b_material_out_form f
+        left join b_material_info m on f.material_id = m.id
+        <where>
+            <if test="dto.materialName!=null and dto.materialName!=''">
+                and m.name like concat('%',concat(#{dto.materialName},'%'))
+            </if>
+            <if test="dto.outFormStartTime!=null">
+                and f.out_form_time <![CDATA[ >= ]]> #{dto.outFormStartTime}
+            </if>
+            <if test="dto.outFormEndTime!=null">
+                and f.out_form_time <![CDATA[ <= ]]> #{dto.outFormEndTime}
+            </if>
+            <if test="dto.reviewStateList != null and dto.reviewStateList.size() > 0">
+                and f.review_state  in
+                <foreach collection="dto.reviewStateList" item="reviewState" open="(" separator="," close=")">
+                    #{reviewState}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+<!--    <select id="queryMyReviewer" resultType="com.mitesofor.smartsite.warehouse.api.vo.MaterialMyReviewerVo">-->
+<!--        SELECT * FROM (-->
+<!--            SELECT-->
+<!--            m.material_sn,m.type,t.name AS material_name,t2.name AS material_model,m.model,m.unit,m.inventory_num,m.min_warning_inventory_num,-->
+<!--            m.picture,m.loss_ratio,m.max_warning_inventory_num,m.id as material_id,i.id,i.create_by,i.create_time,i.reviewer_id,i.review_time,i.review_state,i.reviewer,'入库' AS mark,u.username AS create_name-->
+<!--            FROM b_material_in_form i-->
+<!--            LEFT JOIN b_material_info m ON i.material_id = m.id-->
+<!--            left join b_material_type t on m.type = t.id-->
+<!--            left join b_material_type t2 on m.model = t2.id-->
+<!--            LEFT JOIN sys_user u ON i.create_by = u.user_id-->
+<!--            <where>-->
+<!--                <if test="reviewStates != null and reviewStates.size() > 0">-->
+<!--                    and i.review_state  in-->
+<!--                    <foreach collection="reviewStates" item="reviewState" open="(" separator="," close=")">-->
+<!--                        #{reviewState}-->
+<!--                    </foreach>-->
+<!--                </if>-->
+<!--                <if test="reviewer!=null">-->
+<!--                    AND i.reviewer_id = #{reviewer}-->
+<!--                </if>-->
+<!--                <if test="materialId!=null">-->
+<!--                    AND i.material_id = #{materialId}-->
+<!--                </if>-->
+<!--                <if test="startTime!=null">-->
+<!--                    AND i.create_time <![CDATA[ >= ]]> #{startTime}-->
+<!--                </if>-->
+<!--                <if test="endTime!=null">-->
+<!--                    AND i.create_time <![CDATA[ <= ]]> #{endTime}-->
+<!--                </if>-->
+<!--            </where>-->
+<!--            UNION-->
+<!--            SELECT-->
+<!--            m.material_sn,m.type,t.name AS material_name,t2.name AS material_model, m.model,m.unit,m.inventory_num,m.min_warning_inventory_num,-->
+<!--            m.picture,m.loss_ratio,m.max_warning_inventory_num,m.id as material_id,o.id,o.create_by,o.create_time,o.reviewer_id,o.review_time,o.review_state,o.reviewer,'出库' AS mark,u.username AS create_name-->
+<!--            FROM b_material_out_form o-->
+<!--            LEFT JOIN b_material_info m ON o.material_id = m.id-->
+<!--            left join b_material_type t on m.type = t.id-->
+<!--            left join b_material_type t2 on m.model = t2.id-->
+<!--            LEFT JOIN sys_user u ON o.create_by = u.user_id-->
+<!--            <where>-->
+<!--                <if test="reviewStates != null and reviewStates.size() > 0">-->
+<!--                    and o.review_state  in-->
+<!--                    <foreach collection="reviewStates" item="reviewState" open="(" separator="," close=")">-->
+<!--                        #{reviewState}-->
+<!--                    </foreach>-->
+<!--                </if>-->
+<!--                <if test="reviewer!=null">-->
+<!--                    AND o.reviewer_id = #{reviewer}-->
+<!--                </if>-->
+<!--                <if test="materialId!=null">-->
+<!--                    AND o.material_id = #{materialId}-->
+<!--                </if>-->
+<!--                <if test="startTime!=null">-->
+<!--                    AND o.create_time <![CDATA[ >= ]]> #{startTime}-->
+<!--                </if>-->
+<!--                <if test="endTime!=null">-->
+<!--                    AND o.create_time <![CDATA[ <= ]]> #{endTime}-->
+<!--                </if>-->
+<!--            </where>-->
+<!--        ) t ORDER BY t.create_time-->
+<!--    </select>-->
+
+    <select id="queryMyReviewer" resultType="com.mitesofor.smartsite.warehouse.api.vo.MaterialMyReviewerVo">
+        SELECT * FROM (
+        SELECT
+        i.id,i.create_by,i.create_time,i.reviewer_id,i.review_time,i.review_state,i.reviewer,'入库' AS mark,u.username AS create_name,
+        i.material_id
+        FROM b_material_in_form i
+        LEFT JOIN sys_user u ON i.create_by = u.user_id
+        <where>
+            <if test="reviewStates != null and reviewStates.size() > 0">
+                and i.review_state  in
+                <foreach collection="reviewStates" item="reviewState" open="(" separator="," close=")">
+                    #{reviewState}
+                </foreach>
+            </if>
+            <if test="createBy!=null">
+                AND i.create_by = #{createBy}
+            </if>
+            <if test="reviewer!=null">
+                AND i.reviewer_id = #{reviewer}
+            </if>
+            <if test="materialId!=null">
+                AND i.material_id = #{materialId}
+            </if>
+            <if test="startTime!=null">
+                AND i.create_time <![CDATA[ >= ]]> #{startTime}
+            </if>
+            <if test="endTime!=null">
+                AND i.create_time <![CDATA[ <= ]]> #{endTime}
+            </if>
+        </where>
+        UNION
+        SELECT
+        o.id,o.create_by,o.create_time,o.reviewer_id,o.review_time,o.review_state,o.reviewer,'出库' AS mark,u.username AS create_name,
+        o.material_id
+        FROM b_material_out_form o
+        LEFT JOIN sys_user u ON o.create_by = u.user_id
+        <where>
+            <if test="reviewStates != null and reviewStates.size() > 0">
+                and o.review_state  in
+                <foreach collection="reviewStates" item="reviewState" open="(" separator="," close=")">
+                    #{reviewState}
+                </foreach>
+            </if>
+            <if test="createBy!=null">
+                AND o.create_by = #{createBy}
+            </if>
+            <if test="reviewer!=null">
+                AND o.reviewer_id = #{reviewer}
+            </if>
+            <if test="materialId!=null">
+                AND o.material_id = #{materialId}
+            </if>
+            <if test="startTime!=null">
+                AND o.create_time <![CDATA[ >= ]]> #{startTime}
+            </if>
+            <if test="endTime!=null">
+                AND o.create_time <![CDATA[ <= ]]> #{endTime}
+            </if>
+        </where>
+        ) t ORDER BY t.create_time desc
+    </select>
+
+    <select id="countMaterialOutNum" resultType="java.math.BigDecimal">
+        SELECT IFNULL(SUM(number),0) FROM b_material_out_form WHERE material_id = #{materialId} AND review_state = '1'
+    </select>
+
+    <!--    <select id="queryMyCreate" resultType="com.mitesofor.smartsite.warehouse.api.vo.MaterialMyReviewerVo">-->
+<!--        SELECT * FROM (-->
+<!--        SELECT-->
+<!--        m.material_sn,m.type,t.name AS material_name,t2.name AS material_model,m.model,m.unit,m.inventory_num,-->
+<!--        i.id,i.create_by,i.create_time,review_state,'入库' AS mark,u.username AS create_name FROM b_material_in_form i-->
+<!--        LEFT JOIN b_material_info m ON i.material_id = m.id-->
+<!--        left join b_material_type t on m.type = t.id-->
+<!--        left join b_material_type t2 on m.model = t2.id-->
+<!--        LEFT JOIN sys_user u ON i.create_by = u.user_id-->
+<!--        <where>-->
+<!--            <if test="reviewStates != null and reviewStates.size() > 0">-->
+<!--                and i.review_state  in-->
+<!--                <foreach collection="reviewStates" item="reviewState" open="(" separator="," close=")">-->
+<!--                    #{reviewState}-->
+<!--                </foreach>-->
+<!--            </if>-->
+<!--            <if test="createBy!=null">-->
+<!--                AND i.create_by = #{createBy}-->
+<!--            </if>-->
+<!--            <if test="materialId!=null">-->
+<!--                AND i.material_id = #{materialId}-->
+<!--            </if>-->
+<!--            <if test="startTime!=null">-->
+<!--                AND i.create_time <![CDATA[ >= ]]> #{startTime}-->
+<!--            </if>-->
+<!--            <if test="endTime!=null">-->
+<!--                AND i.create_time <![CDATA[ <= ]]> #{endTime}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        UNION-->
+<!--        SELECT-->
+<!--        m.material_sn,m.type,t.name AS material_name,t2.name AS material_model, m.model,m.unit,m.inventory_num,-->
+<!--        o.id,o.create_by,o.create_time,review_state,'出库' AS mark,u.username AS create_name FROM b_material_out_form o-->
+<!--        LEFT JOIN b_material_info m ON o.material_id = m.id-->
+<!--        left join b_material_type t on m.type = t.id-->
+<!--        left join b_material_type t2 on m.model = t2.id-->
+<!--        LEFT JOIN sys_user u ON o.create_by = u.user_id-->
+<!--        <where>-->
+<!--            <if test="reviewStates != null and reviewStates.size() > 0">-->
+<!--                and o.review_state  in-->
+<!--                <foreach collection="reviewStates" item="reviewState" open="(" separator="," close=")">-->
+<!--                    #{reviewState}-->
+<!--                </foreach>-->
+<!--            </if>-->
+<!--            <if test="createBy!=null">-->
+<!--                AND o.create_by = #{createBy}-->
+<!--            </if>-->
+<!--            <if test="materialId!=null">-->
+<!--                AND i.material_id = #{materialId}-->
+<!--            </if>-->
+<!--            <if test="startTime!=null">-->
+<!--                AND i.create_time <![CDATA[ >= ]]> #{startTime}-->
+<!--            </if>-->
+<!--            <if test="endTime!=null">-->
+<!--                AND i.create_time <![CDATA[ <= ]]> #{endTime}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        ) t ORDER BY t.create_time-->
+<!--    </select>-->
+</mapper>

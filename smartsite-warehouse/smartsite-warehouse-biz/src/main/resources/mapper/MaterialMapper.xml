@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mitesofor.smartsite.warehouse.biz.mapper.MaterialMapper">
+
+    <select id="queryBypage" resultType="com.mitesofor.smartsite.warehouse.api.entity.Material">
+		select i.*,t.name as typeName,t2.name as modelName from b_material_info i
+		left join b_material_type t on i.type = t.id
+		left join b_material_type t2 on i.model = t2.id
+		<where>
+			<if test="dto.name!=null and dto.name!=''">
+				and name like concat('%',concat(#{dto.name},'%'))
+			</if>
+			<if test="dto.materialSn!=null and dto.materialSn!=''">
+				and material_sn like concat('%',concat(#{dto.materialSn},'%'))
+			</if>
+			<if test="dto.type!=null and dto.type!=''">
+				and type =#{dto.type}
+			</if>
+			<if test="dto.proId!=null">
+				and i.pro_id =#{dto.proId}
+			</if>
+		</where>
+		order by create_time desc
+	</select>
+
+	<select id="countMaterialTotal" resultType="com.mitesofor.smartsite.warehouse.api.vo.MaterialTotalCountVo">
+		SELECT
+		IFNULL((SELECT SUM(real_number) FROM b_material_in_form WHERE DATE(review_time) = CURDATE() and  review_state = '1'
+		<if test="proId!=null">
+			and pro_id = #{proId}
+		</if>
+		),0) AS todayNum,
+		IFNULL((SELECT SUM(real_number) FROM b_material_in_form WHERE review_state = '1'
+		<if test="proId!=null">
+			and pro_id = #{proId}
+		</if>
+		),0) AS totalNum
+		FROM DUAL
+	</select>
+
+	<select id="countMaterialTypeTodayTotal"
+			resultType="com.mitesofor.smartsite.warehouse.api.vo.MaterialNumInfoVo">
+		SELECT SUM(f.real_number) AS totalRealNum,SUM(f.form_number) AS totalFormNum,m.type,t.name AS materialName FROM b_material_in_form f
+		LEFT JOIN b_material_info m ON f.material_id = m.id
+		LEFT JOIN b_material_type t ON t.id = m.type
+		WHERE DATE(review_time) = CURDATE() and  review_state = '1'
+		<if test="proId!=null">
+			and pro_id = #{proId}
+		</if>
+		GROUP BY m.type,t.name
+	</select>
+
+	<select id="countMaterialTypeTotal"
+			resultType="com.mitesofor.smartsite.warehouse.api.vo.MaterialNumInfoVo">
+		SELECT SUM(f.real_number) AS totalRealNum,SUM(f.form_number) AS totalFormNum,m.type,t.name AS materialName FROM b_material_in_form f
+		LEFT JOIN b_material_info m ON f.material_id = m.id
+		LEFT JOIN b_material_type t ON t.id = m.type
+		WHERE review_state = '1'
+		<if test="proId!=null">
+			and pro_id = #{proId}
+		</if>
+		GROUP BY m.type,t.name
+	</select>
+
+	<select id="countMaterialTypeNum"
+			resultType="com.mitesofor.smartsite.warehouse.api.vo.MaterialInventoryCountVo">
+		SELECT SUM(inventory_num) AS inventoryNum,t.name AS materialName FROM b_material_info m
+		LEFT JOIN b_material_type t ON t.id = m.type
+		<where>
+			<if test="proId!=null">
+				and m.pro_id = #{proId}
+			</if>
+		</where>
+		GROUP BY m.type,t.name
+	</select>
+
+<!--    <select id="warehouseLog" resultType="com.mitesofor.smartsite.warehouse.api.vo.MaterialWarehouseLogVo">-->
+<!--		SELECT * FROM (-->
+<!--		SELECT m.id AS material_id,m.material_sn,m.type,m.model,m.unit,t2.real_number AS in_number,0 AS out_number,t2.create_name,-->
+<!--		mt.name AS type_name,mt2.name AS model_name,'' AS applicant,t2.in_time AS io_time,t2.remark,t2.reviewer,'1' AS ioType FROM b_material_info m-->
+<!--		LEFT JOIN (-->
+<!--		SELECT f.*,u.username as create_name FROM b_material_in_form f INNER JOIN-->
+<!--		(SELECT material_id,MAX(in_time) AS in_time FROM b_material_in_form GROUP BY material_id) t-->
+<!--		ON f.material_id = t.material_id AND t.in_time = f.in_time-->
+<!--		left join sys_user u on u.user_id = f.create_by-->
+<!--		) t2 ON m.id = t2.material_id-->
+<!--		left join b_material_type mt on m.type = mt.id-->
+<!--		left join b_material_type mt2 on m.model = mt2.id-->
+
+<!--		UNION-->
+
+<!--		SELECT m.id AS material_id,m.material_sn,m.type,m.model,m.unit,0 AS in_number,t2.number AS out_number,'' AS create_name,-->
+<!--		mt.name AS type_name,mt2.name AS model_name,t2.applicant,t2.out_form_time AS io_time,t2.remark,t2.reviewer,'2' AS ioType FROM b_material_info m-->
+<!--		LEFT JOIN (-->
+<!--		SELECT f.* FROM b_material_out_form f INNER JOIN-->
+<!--		(SELECT material_id,MAX(out_form_time) AS out_form_time FROM b_material_out_form GROUP BY material_id) t-->
+<!--		ON f.material_id = t.material_id AND t.out_form_time = f.out_form_time-->
+<!--		) t2 ON m.id = t2.material_id-->
+<!--		left join b_material_type mt on m.type = mt.id-->
+<!--		left join b_material_type mt2 on m.model = mt2.id-->
+<!--		) t3-->
+
+<!--		WHERE t3.io_time IS NOT NULL-->
+<!--		ORDER BY t3.io_time-->
+<!--	</select>-->
+
+<!--	<select id="warehouseLog2" resultType="com.mitesofor.smartsite.warehouse.api.vo.MaterialWarehouseLogVo">-->
+<!--		SELECT * FROM (-->
+<!--		SELECT m.id AS material_id,m.material_sn,m.type,m.model,m.unit,t2.real_number AS in_number,0 AS out_number,t2.create_by,'' AS applicant,t2.in_time AS io_time,t2.remark,t2.reviewer,'1' AS ioType FROM b_material_info m-->
+<!--		LEFT JOIN (-->
+<!--		SELECT f.* FROM b_material_in_form f INNER JOIN-->
+<!--		(SELECT material_id,MAX(in_time) AS in_time FROM b_material_in_form GROUP BY material_id) t-->
+<!--		ON f.material_id = t.material_id AND t.in_time = f.in_time-->
+<!--		) t2 ON m.id = t2.material_id-->
+
+<!--		UNION-->
+
+<!--		SELECT m.id AS material_id,m.material_sn,m.type,m.model,m.unit,0 AS in_number,t2.number AS out_number,'' AS create_by,t2.applicant,t2.out_form_time AS io_time,t2.remark,t2.reviewer,'2' AS ioType FROM b_material_info m-->
+<!--		LEFT JOIN (-->
+<!--		SELECT f.* FROM b_material_out_form f INNER JOIN-->
+<!--		(SELECT material_id,MAX(out_form_time) AS out_form_time FROM b_material_out_form GROUP BY material_id) t-->
+<!--		ON f.material_id = t.material_id AND t.out_form_time = f.out_form_time-->
+<!--		) t2 ON m.id = t2.material_id-->
+<!--		) t3-->
+<!--		WHERE t3.io_time IS NOT NULL-->
+<!--		ORDER BY t3.io_time-->
+<!--	</select>-->
+
+	<select id="warehouseLogForIn"
+			resultType="com.mitesofor.smartsite.warehouse.api.vo.MaterialWarehouseLogVo">
+		SELECT material_id,MAX(in_time) AS io_time FROM b_material_in_form WHERE in_time IS NOT NULL GROUP BY material_id
+	</select>
+
+	<select id="warehouseLogForInList"
+			resultType="com.mitesofor.smartsite.warehouse.api.vo.MaterialWarehouseLogVo">
+		SELECT f.id,material_id,real_number as inNumber,in_time AS io_time,applicant,f.remark,reviewer,u.username as create_name,
+		m.type,m.model,m.unit,m.material_sn
+		FROM b_material_in_form f
+		left join b_material_info m on f.material_id = m.id
+		left join sys_user u on u.user_id = f.create_by
+		WHERE f.in_time IS NOT NULL AND f.review_state IN ('2','3')
+		<if test="dto.materialSn!=null and dto.materialSn!=''">
+			and m.material_sn = #{dto.materialSn}
+		</if>
+		<if test="dto.type!=null and dto.type!=''">
+			and m.type = #{dto.type}
+		</if>
+		<if test="dto.startTime!=null">
+			and f.in_time <![CDATA[ >= ]]> #{dto.startTime}
+		</if>
+		<if test="dto.endTime!=null">
+			and f.in_time <![CDATA[ <= ]]> #{dto.endTime}
+		</if>
+	</select>
+
+	<select id="selectMaterialInFormMaxTimeList"
+			resultType="com.mitesofor.smartsite.warehouse.api.entity.MaterialInForm">
+		SELECT f.*,u.username as create_name FROM b_material_in_form f
+		left join sys_user u on u.user_id = f.create_by
+		<where>
+			<if test="materialId!=null">
+				AND f.material_id = #{materialId}
+			</if>
+			<if test="ioTime!=null">
+				AND f.in_time = #{ioTime}
+			</if>
+		</where>
+		limit 1
+	</select>
+
+	<select id="selectMaterialInfoById"
+			resultType="com.mitesofor.smartsite.warehouse.api.entity.Material">
+		select i.*,t.name as typeName,t2.name as modelName from b_material_info i
+		left join b_material_type t on i.type = t.id
+		left join b_material_type t2 on i.model = t2.id
+		<where>
+			<if test="id!=null">
+				and i.id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<select id="warehouseLogForOut"
+			resultType="com.mitesofor.smartsite.warehouse.api.vo.MaterialWarehouseLogVo">
+		SELECT material_id,MAX(out_form_time) AS io_time FROM b_material_out_form WHERE out_form_time IS NOT NULL  GROUP BY material_id
+	</select>
+
+	<select id="selectMaterialOutFormMaxTimeList"
+			resultType="com.mitesofor.smartsite.warehouse.api.entity.MaterialOutForm">
+		SELECT f.* FROM b_material_out_form f
+		<where>
+			<if test="materialId!=null">
+				AND f.material_id = #{materialId}
+			</if>
+			<if test="ioTime!=null">
+				AND f.out_form_time = #{ioTime}
+			</if>
+		</where>
+		limit 1
+	</select>
+
+	<select id="countMaterialInfoAnalyse"
+			resultType="com.mitesofor.smartsite.warehouse.api.vo.MaterialInfoAnalyseVo">
+		SELECT m.id,m.inventory_num,m.type,t.name AS materialName,t2.name as materialModelName,m.hash_code FROM b_material_info m
+		LEFT JOIN b_material_type t ON t.id = m.type
+		LEFT JOIN b_material_type t2 ON t2.id = m.model
+		<where>
+			<if test="proId!=null">
+				and m.pro_id = #{proId}
+			</if>
+		</where>
+	</select>
+
+	<select id="warehouseLogForOutList"
+			resultType="com.mitesofor.smartsite.warehouse.api.vo.MaterialWarehouseLogVo">
+		SELECT f.id,material_id,number as outNumber,out_form_time AS io_time,applicant,f.remark,reviewer,u.username as create_name,
+		m.type,m.model,m.unit,m.material_sn
+		FROM b_material_out_form f
+		left join b_material_info m on f.material_id = m.id
+		left join sys_user u on u.user_id = f.create_by
+		WHERE f.out_form_time IS NOT NULL AND f.review_state IN ('2','3')
+		<if test="dto.materialSn!=null and dto.materialSn!=''">
+			and m.material_sn = #{dto.materialSn}
+		</if>
+		<if test="dto.type!=null and dto.type!=''">
+			and m.type = #{dto.type}
+		</if>
+		<if test="dto.startTime!=null">
+			and f.in_time <![CDATA[ >= ]]> #{dto.startTime}
+		</if>
+		<if test="dto.endTime!=null">
+			and f.in_time <![CDATA[ <= ]]> #{dto.endTime}
+		</if>
+	</select>
+
+</mapper>

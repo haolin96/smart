@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mitesofor.smartsite.warehouse.biz.mapper.MaterialInFormMapper">
+
+
+      <resultMap id="materialInFormMap" type="com.mitesofor.smartsite.warehouse.api.entity.MaterialInForm">
+                  <id property="id" column="id"/>
+                        <result property="materialId" column="material_id"/>
+                        <result property="realNumber" column="real_number"/>
+                        <result property="formNumber" column="form_number"/>
+                        <result property="lossRatio" column="loss_ratio"/>
+                        <result property="unitPrice" column="unit_price"/>
+                        <result property="manufacturerAddress" column="manufacturer_address"/>
+                        <result property="manufacturer" column="manufacturer"/>
+                        <result property="phone" column="phone"/>
+                        <result property="procureUser" column="procure_user"/>
+                        <result property="materialOutTime" column="material_out_time"/>
+                        <result property="applyTime" column="apply_time"/>
+                        <result property="picture" column="picture"/>
+                        <result property="proId" column="pro_id"/>
+                        <result property="inTime" column="in_time"/>
+                        <result property="applicant" column="applicant"/>
+                        <result property="applicantId" column="applicant_id"/>
+                        <result property="reviewer" column="reviewer"/>
+                        <result property="reviewerId" column="reviewer_id"/>
+                        <result property="reviewTime" column="review_time"/>
+                        <result property="reviewState" column="review_state"/>
+                        <result property="hashCode" column="hash_code"/>
+                        <result property="remark" column="remark"/>
+                        <result property="createBy" column="create_by"/>
+                        <result property="updateBy" column="update_by"/>
+                        <result property="createTime" column="create_time"/>
+                        <result property="updateTime" column="update_time"/>
+      </resultMap>
+
+      <select id="selectMaterialInFormByPage" resultType="com.mitesofor.smartsite.warehouse.api.entity.MaterialInForm">
+            select f.*,m.name,u.username AS create_name from b_material_in_form f
+            left join b_material_info m on f.material_id = m.id
+            left join sys_user u on u.user_id = f.create_by
+            <where>
+                  <if test="dto.materialName!=null and dto.materialName!=''">
+                        and m.name like concat('%',concat(#{dto.materialName},'%'))
+                  </if>
+                  <if test="dto.manufacturer!=null and dto.manufacturer!=''">
+                        and f.manufacturer like concat('%',concat(#{dto.manufacturer},'%'))
+                  </if>
+                  <if test="dto.buySource!=null and dto.buySource!=''">
+                        and f.buy_source like concat('%',concat(#{dto.buySource},'%'))
+                  </if>
+                  <if test="dto.reviewStateList != null and dto.reviewStateList.size() > 0">
+                        and f.review_state  in
+                        <foreach collection="dto.reviewStateList" item="reviewState" open="(" separator="," close=")">
+                              #{reviewState}
+                        </foreach>
+                  </if>
+            </where>
+      </select>
+
+    <select id="countMaterialInNum" resultType="java.math.BigDecimal">
+          SELECT IFNULL(SUM(real_number),0) FROM b_material_in_form WHERE material_id = #{materialId} AND review_state = '1'
+    </select>
+</mapper>
