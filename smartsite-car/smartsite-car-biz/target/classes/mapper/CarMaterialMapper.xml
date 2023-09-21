@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mitesofor.smartsite.car.biz.mapper.CarMaterialMapper">
+<!--    <resultMap id="CarMaterialMap" type="com.mitesofor.smartsite.car.api.entity.CarMaterial">-->
+<!--        <id property="id" column="id"/>-->
+<!--            <result property="carId" column="car_id"/>-->
+<!--            <result property="driver" column="driver"/>-->
+<!--            <result property="materialId" column="material_id"/>-->
+<!--            <result property="materialTypeId" column="material_type_id"/>-->
+<!--            <result property="materialTypeName" column="material_type_name"/>-->
+<!--            <result property="weight" column="weight"/>-->
+<!--    </resultMap>-->
+
+    <select id="selectMaterialInfo" parameterType="java.lang.Integer" resultType="com.mitesofor.smartsite.car.api.vo.CarMaterialVo">
+        select I.id AS material_id, I.model AS material_type_id,
+               I.min_warning_inventory_num, I.max_warning_inventory_num,
+                T.name AS material_type_name
+        from b_material_info AS I join b_material_type AS T
+        on I.model = T.id
+        where I.id = #{id}
+    </select>
+
+    <select id="selectLatestOne" parameterType="java.lang.String" resultType="com.mitesofor.smartsite.car.api.entity.CarMaterial">
+        select * from car_material
+        where car_id = #{carId}
+        order by create_time desc
+        limit 1
+    </select>
+
+    <select id="insertMaterial" parameterType="com.mitesofor.smartsite.warehouse.api.entity.MaterialInForm">
+        insert into b_material_in_form values (#{id}, #{materialId}, #{realNumber}, #{formNumber}, #{lossRatio}, #{unitPrice},
+                                               #{manufacturerAddress}, #{manufacturer}, #{phone}, #{procureUser}, #{materialOutTime},
+                                               #{applyTime}, #{picture}, #{inTime}, #{proId}, #{applicant}, #{applicantId}, #{reviewer},
+                                               #{reviewerId}, #{reviewTime}, #{reviewState}, #{hashCode}, #{remark}, #{createBy},
+                                               #{updateBy}, #{createTime}, #{updateTime})
+    </select>
+
+    <select id="selectLatestList" parameterType="java.lang.String" resultType="com.mitesofor.smartsite.car.api.entity.CarMaterial">
+        select * from car_material
+        order by create_time desc
+        limit 10
+    </select>
+
+<!--    <select id="saveCarMaterial" parameterType="com.mitesofor.smartsite.car.api.entity.CarMaterial">-->
+<!--        insert into car_material values ()-->
+<!--    </select>-->
+</mapper>

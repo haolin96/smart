@@ -1,0 +1,11 @@
+com\mitesofor\smartsite\car\api\entity\CarInAndOut.class
+com\mitesofor\smartsite\car\api\entity\Car.class
+com\mitesofor\smartsite\car\api\vo\CarMaterialVo.class
+com\mitesofor\smartsite\car\api\vo\CarAndDriverVo.class
+com\mitesofor\smartsite\car\api\dto\CarAndDriverDto.class
+com\mitesofor\smartsite\car\api\vo\CarVo.class
+com\mitesofor\smartsite\car\api\vo\CarInAndOutVo.class
+com\mitesofor\smartsite\car\api\dto\CarInAndOutDto.class
+com\mitesofor\smartsite\car\api\entity\Driver.class
+com\mitesofor\smartsite\car\api\entity\CarMaterial.class
+com\mitesofor\smartsite\car\api\vo\BigScreenCarDataSseVo.class

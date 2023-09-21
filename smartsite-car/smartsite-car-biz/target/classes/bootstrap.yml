@@ -1,0 +1,38 @@
+server:
+  port: 4005
+
+spring:
+  application:
+    name: smartsite-car-biz
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_HOST:smartsite-register}:${NACOS_PORT:8848}
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yml
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+  autoconfigure:
+    exclude: org.springframework.cloud.gateway.config.GatewayAutoConfiguration,org.springframework.cloud.gateway.config.GatewayClassPathWarningAutoConfiguration
+  profiles:
+    active: dev
+
+### xxl job
+#xxl:
+#  job:
+#    admin:
+#      ### 调度中心部署跟地址 [选填]：如调度中心集群部署存在多个地址则用逗号分隔。执行器将会使用该地址进行"执行器心跳注册"和"任务结果回调"；为空则关闭自动注册；
+#      addresses: http://${xxl-job-admin-host:192.168.1.207}:${xxl-job-admin-port:8080}/xxl-job-admin
+#    ### 执行器通讯TOKEN [选填]：非空时启用；
+#    accessToken:
+#    executor:
+#      ### 新增自定义配置，是否开启执行器
+#      enable: true
+#      ip: ${xxl-job-executor-ip:}
+#      port: 0
+#      appname: smartsite-car-task
+#      address:
+#      logpath: log/car/job
+#      ### 执行器日志文件保存天数 [选填] ： 过期日志自动清理, 限制值大于等于3时生效; 否则, 如-1, 关闭自动清理功能；
+#      logretentiondays: 30

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mitesofor.smartsite.car.biz.mapper.CarInAndOutMapper">
+
+<!--    <sql id="PAGING_START">-->
+<!--       	<![CDATA[-->
+
+<!--        ]]>-->
+<!--	</sql>-->
+
+<!--    <sql id="PAGING_END">-->
+<!--       	<![CDATA[-->
+<!--        LIMIT #{currentIndex}, #{size}-->
+<!--        ]]>-->
+<!--	</sql>-->
+
+    <sql id = "ORDER_BY">
+        order by I.in_or_out_time DESC
+    </sql>
+
+    <sql id = "SELECT_PARAMETER">
+        <where>
+            <if test = "carInAndOut.id != null and carInAndOut.id != ''">
+                and I.id = #{carInAndOut.id}
+            </if>
+            <if test = "carInAndOut.carId != null and carInAndOut.carId != ''">
+                and I.car_id = #{carInAndOut.carId}
+            </if>
+<!--            <if test = "carInAndOut.inOrOutTime != null and carInAndOut.inOrOutTime != ''">-->
+<!--                and I.in_or_out_time = #{carInAndOut.inOrOutTime}-->
+<!--            </if>-->
+            <if test = "carInAndOut.inOrOut != null and carInAndOut.inOrOut != ''">
+                and I.in_or_out = #{carInAndOut.inOrOut}
+            </if>
+            <if test = "carInAndOut.channelId != null and carInAndOut.channelId != ''">
+                and I.channel_id = #{carInAndOut.channelId}
+            </if>
+            <if test = "carInAndOut.isRegistered != null and carInAndOut.isRegistered != ''">
+                and I.is_registered = #{carInAndOut.isRegistered}
+            </if>
+            <if test = "carInAndOut.isCleaned != null and carInAndOut.isCleaned != ''">
+                and I.is_cleaned = #{carInAndOut.isCleaned}
+            </if>
+            <if test = "carInAndOut.location != null and carInAndOut.location != ''">
+                and I.location = #{carInAndOut.location}
+            </if>
+            <if test = "carInAndOut.licensePlateInoutPhoto != null and carInAndOut.licensePlateInoutPhoto != ''">
+                and I.license_plate_inout_photo = #{carInAndOut.licensePlateInoutPhoto}
+            </if>
+            <if test = "carInAndOut.carHeadInoutPhoto != null and carInAndOut.carHeadInoutPhoto != ''">
+                and I.car_head_inout_photo = #{carInAndOut.carHeadInoutPhoto}
+            </if>
+            <if test = "carInAndOut.carTailInoutPhoto != null and carInAndOut.carTailInoutPhoto != ''">
+                and I.car_tail_inout_photo = #{carInAndOut.carTailInoutPhoto}
+            </if>
+            <if test = "carInAndOut.carBodyInoutPhoto != null and carInAndOut.carBodyInoutPhoto != ''">
+                and I.car_body_inout_photo = #{carInAndOut.carBodyInoutPhoto}
+            </if>
+        </where>
+    </sql>
+    <sql id = "SELECT_PARAMETER_LIKE">
+        <where>
+            <if test = "carInAndOut.id != null and carInAndOut.id != ''">
+                and I.id like concat('%', #{carInAndOut.id}, '%')
+            </if>
+            <if test = "carInAndOut.carId != null and carInAndOut.carId != ''">
+                and I.car_id like concat('%', #{carInAndOut.carId}, '%')
+            </if>
+<!--            <if test = "carInAndOut.inOrOutTime != null and carInAndOut.inOrOutTime != ''">-->
+<!--                and I.in_or_out_time like concat('%', #{carInAndOut.inOrOutTime}, '%')-->
+<!--            </if>-->
+            <if test = "carInAndOut.inOrOut != null and carInAndOut.inOrOut != ''">
+                and I.in_or_out like concat('%', #{carInAndOut.inOrOut}, '%')
+            </if>
+            <if test = "carInAndOut.channelId != null and carInAndOut.channelId != ''">
+                and I.channel_id like concat('%', #{carInAndOut.channelId}, '%')
+            </if>
+            <if test = "carInAndOut.isRegistered != null and carInAndOut.isRegistered != ''">
+                and I.is_registered like concat('%', #{carInAndOut.isRegistered}, '%')
+            </if>
+            <if test = "carInAndOut.isCleaned != null and carInAndOut.isCleaned != ''">
+                and I.is_cleaned like concat('%', #{carInAndOut.isCleaned}, '%')
+            </if>
+            <if test = "carInAndOut.location != null and carInAndOut.location != ''">
+                and I.location like concat('%', #{carInAndOut.location}, '%')
+            </if>
+            <if test = "carInAndOut.licensePlateInoutPhoto != null and carInAndOut.licensePlateInoutPhoto != ''">
+                and I.license_plate_inout_photo like concat('%', #{carInAndOut.licensePlateInoutPhoto}, '%')
+            </if>
+            <if test = "carInAndOut.carHeadInoutPhoto != null and carInAndOut.carHeadInoutPhoto != ''">
+                and I.car_head_inout_photo like concat('%', #{carInAndOut.carHeadInoutPhoto}, '%')
+            </if>
+            <if test = "carInAndOut.carTailInoutPhoto != null and carInAndOut.carTailInoutPhoto != ''">
+                and I.car_tail_inout_photo like concat('%', #{carInAndOut.carTailInoutPhoto}, '%')
+            </if>
+            <if test = "carInAndOut.carBodyInoutPhoto != null and carInAndOut.carBodyInoutPhoto != ''">
+                and I.car_body_inout_photo like concat('%', #{carInAndOut.carBodyInoutPhoto}, '%')
+            </if>
+        </where>
+    </sql>
+
+    <sql id = "SELECT_CONTENT">
+        select I.id, I.car_id, I.in_or_out_time, I.in_or_out, I.channel_id, I.is_cleaned, I.location, I.is_registered, I.license_plate_inout_photo, I.car_body_inout_photo, I.car_head_inout_photo,
+               I.car_tail_inout_photo, c.car_brand, c.car_type, c.driver, c.car_company, c.axles, c.wheels, c.lengths, c.heights
+        from car_in_and_out AS I left join car AS c
+        on I.car_id = c.car_id
+    </sql>
+
+    <update id = "update" parameterType="com.mitesofor.smartsite.car.api.entity.CarInAndOut">
+        update car_in_and_out AS I
+        <set>
+            <if test = "carInAndOut.id != null">
+                I.id = #{carInAndOut.id},
+            </if>
+            <if test = "carInAndOut.carId != null">
+                I.car_id = #{carInAndOut.carId},
+            </if>
+            <if test = "carInAndOut.inOrOutTime != null">
+                I.in_or_out_time = #{carInAndOut.inOrOutTime},
+            </if>
+            <if test = "carInAndOut.inOrOut != null">
+                I.in_or_out = #{carInAndOut.inOrOut},
+            </if>
+            <if test = "carInAndOut.channelId != null">
+                I.channel_id = #{carInAndOut.channelId},
+            </if>
+            <if test = "carInAndOut.isRegistered != null">
+                I.is_registered = #{carInAndOut.isRegistered},
+            </if>
+            <if test = "carInAndOut.isCleaned != null">
+                I.is_cleaned = #{carInAndOut.isCleaned},
+            </if>
+            <if test = "carInAndOut.location != null">
+                I.location = #{carInAndOut.location},
+            </if>
+            <if test = "carInAndOut.licensePlateInoutPhoto != null">
+                I.license_plate_inout_photo = #{carInAndOut.licensePlateInoutPhoto},
+            </if>
+            <if test = "carInAndOut.carHeadInoutPhoto != null">
+                I.car_head_inout_photo = #{carInAndOut.carHeadInoutPhoto},
+            </if>
+            <if test = "carInAndOut.carTailInoutPhoto != null">
+                I.car_tail_inout_photo = #{carInAndOut.carTailInoutPhoto},
+            </if>
+            <if test = "carInAndOut.carBodyInoutPhoto != null">
+                I.car_body_inout_photo = #{carInAndOut.carBodyInoutPhoto},
+            </if>
+        </set>
+        where I.id = {id} and I.is_delete = 0
+    </update>
+
+
+
+    <delete id = "deleteByPrimaryKey" parameterType="java.lang.Integer">
+        update car_in_and_out AS I
+        set I.is_delete = 0
+        where I.id = #{id}
+    </delete>
+
+    <select id = "selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.mitesofor.smartsite.car.api.entity.CarInAndOut">
+        select * from car_in_and_out AS I
+        where I.id = #{id} and I.is_delete = 0
+    </select>
+
+    <select id = "selectByPage" resultType="com.mitesofor.smartsite.car.api.vo.CarInAndOutVo">
+<!--        <include refid="PAGING_START"/>-->
+        <include refid="SELECT_CONTENT"/>
+        <where>
+            <if test = "carInAndOut.carId != null and carInAndOut.carId != ''">
+                and I.car_id like concat('%', #{carInAndOut.carId}, '%')
+            </if>
+            <if test = "car.carCompany != null and car.carCompany != ''">
+                and c.car_company like concat('%', #{car.carCompany}, '%')
+            </if>
+            <if test = "car.driver != null and car.driver != ''">
+                and c.driver like concat('%', #{car.driver}, '%')
+            </if>
+            <if test = "car.driverId != null and car.driverId != ''">
+                and c.driver_id like concat('%', #{car.driverId}, '%')
+            </if>
+            <if test = "car.carType != null and car.carType != ''">
+                and c.car_type like concat('%', #{car.carType}, '%')
+            </if>
+<!--            <if test = "car.projectId != null and car.projectId != ''">-->
+<!--                and c.project_id like concat('%', #{car.projectId}, '%')-->
+<!--            </if>-->
+            <if test = "time != null and time != ''">
+                and I.in_or_out_time like concat('%', #{time}, '%')
+            </if>
+            and Date(I.in_or_out_time) <![CDATA[<=]]> Date(Now())
+        </where>
+<!--        <include refid="SELECT_PARAMETER_LIKE"/>-->
+        <include refid="ORDER_BY"/>
+<!--        <include refid="PAGING_END"/>-->
+    </select>
+
+    <select id="selectLatestIn" resultType="com.mitesofor.smartsite.car.api.vo.CarInAndOutVo">
+        <include refid="SELECT_CONTENT"/>
+        where I.in_or_out = 1 and I.is_delete = 0 and c.is_delete = 0
+            and Date(I.in_or_out_time) <![CDATA[<=]]> Date(Now())
+        order by I.in_or_out_time DESC
+        limit 1
+    </select>
+
+    <select id="selectLatestOut" resultType="com.mitesofor.smartsite.car.api.vo.CarInAndOutVo">
+        <include refid="SELECT_CONTENT"/>
+        where I.in_or_out = 0 and I.is_delete = 0 and c.is_delete = 0
+            and Date(I.in_or_out_time) <![CDATA[<=]]> Date(Now())
+        order by I.in_or_out_time DESC
+        limit 1
+    </select>
+
+    <select id = "selectByExample" resultType="com.mitesofor.smartsite.car.api.entity.CarInAndOut">
+        select * from car_in_and_out AS I
+        <include refid="SELECT_PARAMETER"/>
+    </select>
+
+    <select id = "selectBySevenDays" resultType="com.mitesofor.smartsite.car.api.entity.CarInAndOut">
+        select * from car_in_and_out AS I
+        where I.in_or_out_time >= DATE_SUB(Now(), INTERVAL 7 DAY)
+    </select>
+
+    <select id = "test">
+        select SUM(sales) AS sum_sales, trade_date, store
+            from (select DATE_FORMAT(trade_time, '%Y-%M-%d') AS trade_date, sales, store
+                  from Table1)
+        group by trade_date, store
+
+        select T1.SUM(sales) AS sum_sales, T2.item_name
+        from Table1 AS T1 join Table2 AS T2
+        on T1.item_code = T2.item_code
+        group by T2.item_name
+
+        select MIN(trade_time), order_no, store
+        from Table1
+        group by store
+        order by trade_time
+        limit 1
+    </select>
+
+    
+</mapper>

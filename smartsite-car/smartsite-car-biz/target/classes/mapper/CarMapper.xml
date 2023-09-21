@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mitesofor.smartsite.car.biz.mapper.CarMapper">
+
+<!--    <sql id="PAGING_START">-->
+<!--       	<![CDATA[-->
+
+<!--        ]]>-->
+<!--	</sql>-->
+
+<!--    <sql id="PAGING_END">-->
+<!--       	<![CDATA[-->
+<!--        LIMIT #{currentIndex}, #{size}-->
+<!--        ]]>-->
+<!--	</sql>-->
+
+    <sql id = "SELECT_PARAMETER">
+        <where>
+            <if test = "carId != null and carId != ''">
+                and c.car_id = #{carId}
+            </if>
+            <if test = "carCompany != null and carCompany != ''">
+                and c.car_company = #{carCompany}
+            </if>
+            <if test = "driver != null and driver != ''">
+                and c.driver = #{driver}
+            </if>
+            <if test = "driverId != null and driverId != ''">
+                and c.driver_id = #{driverId}
+            </if>
+            <if test = "carBrand != null and carBrand != ''">
+                and c.car_brand = #{carBrand}
+            </if>
+            <if test = "carType != null and carType != ''">
+                and c.car_type = #{carType}
+            </if>
+<!--            <if test = "owner != null and owner != ''">-->
+<!--                and c.owner = #{owner}-->
+<!--            </if>-->
+            <if test = "lengths != null and lengths != ''">
+                and c.lengths = #{lengths}
+            </if>
+            <if test = "heights != null and heights != ''">
+                and c.heights = #{heights}
+            </if>
+            <if test = "axles != null and axles != ''">
+                and c.axles = #{axles}
+            </if>
+            <if test = "wheels != null and wheels != ''">
+                and c.wheels = #{wheels}
+            </if>
+            <if test = "loadCapacity != null and loadCapacity != ''">
+                and c.loadCapacity = #{loadCapacity}
+            </if>
+            <if test = "carLicensePhoto != null and carLicensePhoto != ''">
+                and c.car_license_photo = #{carLicensePhoto}
+            </if>
+            <if test = "licensePlatePhoto != null and licensePlatePhoto != ''">
+                and c.license_plate_photo = #{licensePlatePhoto}
+            </if>
+            <if test = "carHeadPhoto != null and carHeadPhoto != ''">
+                and c.car_head_photo = #{carHeadPhoto}
+            </if>
+            <if test = "carTailPhoto != null and carTailPhoto != ''">
+                and c.car_tail_photo = #{carTailPhoto}
+            </if>
+            <if test = "carBodyPhoto != null and carBodyPhoto != ''">
+                and c.car_body_photo = #{carBodyPhoto}
+            </if>
+            <if test = "carRegisterPlace != null and carRegisterPlace != ''">
+                and c.car_register_place = #{carRegisterPlace}
+            </if>
+            <if test = "carRegisterDate != null and carRegisterDate != ''">
+                and c.car_register_date = #{carRegisterDate}
+            </if>
+            <if test = "carRegisterId != null and carRegisterId != ''">
+                and c.car_register_id= #{carRegisterId}
+            </if>
+            <if test = "memo != null and memo != ''">
+                and c.memo = #{memo}
+            </if>
+<!--            <if test = "location != null and location != ''">-->
+<!--                and c.location = #{location}-->
+<!--            </if>-->
+            <if test = "projectId != null and projectId != ''">
+                and c.project_id = #{projectId}
+            </if>
+            <if test = "createTime != null and createTime != ''">
+                and c.create_time = #{createTime}
+            </if>
+            and c.is_delete = 0
+        </where>
+    </sql>
+
+    <sql id = "SELECT_PARAMETER_LIKE">
+        <where>
+            <if test = "car.carId != null and car.carId != ''">
+                and c.car_id like concat('%', #{car.carId}, '%')
+            </if>
+            <if test = "car.carCompany != null and car.carCompany != ''">
+                and c.car_company like concat('%',#{car.carCompany}, '%')
+            </if>
+            <if test = "car.driver != null and car.driver != ''">
+                and c.driver like concat('%', #{car.driver}, '%')
+            </if>
+            <if test = "car.driverId != null and car.driverId != ''">
+                and c.driver_id like concat('%', #{car.driverId}, '%')
+            </if>
+            <if test = "car.carBrand != null and car.carBrand != ''">
+                and c.car_brand like concat('%', #{car.carBrand}, '%')
+            </if>
+            <if test = "car.carType != null and car.carType != ''">
+                and c.car_type like concat('%', #{car.carType}, '%')
+            </if>
+<!--            <if test = "car.owner != null and car.owner != ''">-->
+<!--                and c.owner like concat('%', #{car.owner}, '%')-->
+<!--            </if>-->
+            <if test = "car.lengths != null and car.lengths != ''">
+                and c.lengths like concat('%', #{car.lengths}, '%')
+            </if>
+            <if test = "car.heights != null and car.heights != ''">
+                and c.heights like concat('%', #{car.heights}, '%')
+            </if>
+            <if test = "car.axles != null and car.axles != ''">
+                and c.axles like concat('%', #{car.axles}, '%')
+            </if>
+            <if test = "car.wheels != null and car.wheels != ''">
+                and c.wheels like concat('%', #{car.wheels}, '%')
+            </if>
+            <if test = "car.loadCapacity != null and car.loadCapacity != ''">
+                and c.loadCapacity like concat('%', #{car.loadCapacity}, '%')
+            </if>
+            <if test = "car.carLicensePhoto != null and car.carLicensePhoto != ''">
+                and c.car_license_photo like concat('%', #{car.carLicensePhoto}, '%')
+            </if>
+            <if test = "car.licensePlatePhoto != null and car.licensePlatePhoto != ''">
+                and c.license_plate_photo like concat('%', #{car.licensePlatePhoto}, '%')
+            </if>
+            <if test = "car.carHeadPhoto != null and car.carHeadPhoto != ''">
+                and c.car_head_photo like concat('%', #{car.carHeadPhoto}, '%')
+            </if>
+            <if test = "car.carTailPhoto != null and car.carTailPhoto != ''">
+                and c.car_tail_photo like concat('%', #{car.carTailPhoto}, '%')
+            </if>
+            <if test = "car.carBodyPhoto != null and car.carBodyPhoto != ''">
+                and c.car_body_photo like concat('%', #{car.carBodyPhoto}, '%')
+            </if>
+            <if test = "car.carRegisterPlace != null and car.carRegisterPlace != ''">
+                and c.car_register_place like concat('%', #{car.carRegisterPlace}, '%')
+            </if>
+            <if test = "car.carRegisterDate != null and car.carRegisterDate != ''">
+                and c.car_register_date like concat('%', #{car.carRegisterDate}, '%')
+            </if>
+            <if test = "car.carRegisterId != null and car.carRegisterId != ''">
+                and c.car_register_id like concat('%', #{car.carRegisterId}, '%')
+            </if>
+            <if test = "car.memo != null and car.memo != ''">
+                and c.memo like concat('%', #{car.memo}, '%')
+            </if>
+<!--            <if test = "car.location != null and car.location != ''">-->
+<!--                and c.location like concat('%', #{car.location}, '%')-->
+<!--            </if>-->
+            <if test = "car.projectId != null and car.projectId != ''">
+                and c.project_id like concat('%', #{car.projectId}, '%')
+            </if>
+            <if test = "car.createTime != null and car.createTime != ''">
+                and c.create_time like concat('%', #{car.createTime}, '%')
+            </if>
+            and c.is_delete = 0
+        </where>
+    </sql>
+    <sql id = "SELECT_CONTENT">
+       select c.id, c.car_id, c.car_company, c.driver, c.driver_id, c.car_brand, c.car_type, c.lengths,
+       c.heights, c.axles, c.wheels, c.load_capacity, c.car_license_photo, c.license_plate_photo, c.car_head_photo,
+       c.car_tail_photo, c.car_body_photo, c.car_register_place, c.car_register_date, c.car_register_id,
+       c.memo, c.project_id, c.create_time, d.driver_license_photo, d.phone, d.driver_company, d.address, p.name AS project_name
+       from car AS c left join driver AS d
+       on c.driver_id = d.driver_id
+       left join project_management AS p
+       on c.project_id = p.id
+    </sql>
+
+
+    <update id = "update" parameterType="com.mitesofor.smartsite.car.api.entity.Car">
+        update car
+        <set>
+            <if test = "carCompany != null">
+                car_company = #{carCompany},
+            </if>
+            <if test = "driver != null">
+                driver = #{driver},
+            </if>
+            <if test = "driverId != null">
+                driver_id = #{driverId},
+            </if>
+            <if test = "carBrand != null">
+                car_brand = #{carBrand},
+            </if>
+            <if test = "carType != null">
+                car_type = #{carType},
+            </if>
+<!--            <if test = "owner != null">-->
+<!--                owner = #{owner},-->
+<!--            </if>-->
+            <if test = "lengths != null">
+                lengths = #{lengths},
+            </if>
+            <if test = "heights != null">
+                heights = #{heights},
+            </if>
+            <if test = "axles != null">
+                axles = #{axles},
+            </if>
+            <if test = "wheels != null">
+                wheels = #{wheels},
+            </if>
+            <if test = "loadCapacity != null">
+                load_capacity = #{loadCapacity},
+            </if>
+            <if test = "carLicensePhoto != null">
+                car_license_photo = #{carLicensePhoto},
+            </if>
+            <if test = "licensePlatePhoto != null">
+                license_plate_photo = #{licensePlatePhoto},
+            </if>
+            <if test = "carHeadPhoto != null">
+                car_head_photo = #{carHeadPhoto},
+            </if>
+            <if test = "carTailPhoto != null">
+                car_tail_photo = #{carTailPhoto},
+            </if>
+            <if test = "carBodyPhoto != null">
+                car_body_photo = #{carBodyPhoto},
+            </if>
+            <if test = "carRegisterPlace != null">
+                car_register_place = #{carRegisterPlace},
+            </if>
+            <if test = "carRegisterDate != null">
+                car_register_date = #{carRegisterDate},
+            </if>
+            <if test = "carRegisterId != null">
+                car_register_id= #{carRegisterId},
+            </if>
+            <if test = "memo != null">
+                memo = #{memo},
+            </if>
+<!--            <if test = "location != null">-->
+<!--                location = #{location},-->
+<!--            </if>-->
+            <if test = "projectId != null">
+                project_id = #{projectId},
+            </if>
+            <if test = "createTime != null">
+                create_time = #{createTime},
+            </if>
+        </set>
+        where id = #{id} and is_delete = 0
+    </update>
+
+    <delete id="delete" parameterType="com.mitesofor.smartsite.car.api.entity.Car">
+        delete from car AS c
+        <include refid="SELECT_PARAMETER"/>
+    </delete>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        update car set is_delete = 1
+        where id = #{id}
+    </delete>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.mitesofor.smartsite.car.api.entity.Car">
+        select * from car AS c join project_management AS p
+        on c.project_id = p.id
+        where c.id = #{id} and c.is_delete = 0
+    </select>
+
+    <select id="selectByExample" parameterType="com.mitesofor.smartsite.car.api.entity.Car" resultType="com.mitesofor.smartsite.car.api.entity.Car">
+        select * from car AS c
+        <include refid="SELECT_PARAMETER"/>
+    </select>
+
+    <select id="selectByPage" resultType="com.mitesofor.smartsite.car.api.vo.CarAndDriverVo" >
+<!--        <include refid="PAGING_START"/>-->
+
+        <include refid="SELECT_CONTENT"/>
+        <include refid="SELECT_PARAMETER_LIKE"/>
+
+<!--        <include refid="PAGING_END"/>-->
+    </select>
+</mapper>

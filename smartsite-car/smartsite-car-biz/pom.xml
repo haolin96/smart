@@ -1,0 +1,139 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.mitesofor</groupId>
+        <artifactId>smartsite-car</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>smartsite-car-biz</artifactId>
+    <packaging>jar</packaging>
+
+    <description>车辆管理模块</description>
+
+    <dependencies>
+        <!-- upms api、model 模块-->
+        <dependency>
+            <groupId>com.mitesofor</groupId>
+            <artifactId>smartsite-car-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.mitesofor</groupId>
+            <artifactId>smartsite-warehouse-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!--日志处理-->
+        <dependency>
+            <groupId>com.mitesofor</groupId>
+            <artifactId>smartsite-common-log</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.mitesofor</groupId>
+            <artifactId>smartsite-common-data</artifactId>
+        </dependency>
+        <!--swagger-->
+        <dependency>
+            <groupId>com.mitesofor</groupId>
+            <artifactId>smartsite-common-swagger</artifactId>
+        </dependency>
+        <!--文件系统-->
+        <dependency>
+            <groupId>com.mitesofor</groupId>
+            <artifactId>smartsite-common-oss</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.mitesofor</groupId>
+            <artifactId>smartsite-common-minio</artifactId>
+        </dependency>
+        <!--注册中心客户端-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <!--配置中心客户端-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+        <!--spring security 、oauth、jwt依赖-->
+        <dependency>
+            <groupId>com.mitesofor</groupId>
+            <artifactId>smartsite-common-security</artifactId>
+        </dependency>
+        <!--支持动态路由配置 -->
+        <dependency>
+            <groupId>com.mitesofor</groupId>
+            <artifactId>smartsite-common-gateway</artifactId>
+        </dependency>
+        <!--sentinel 依赖-->
+        <dependency>
+            <groupId>com.mitesofor</groupId>
+            <artifactId>smartsite-common-sentinel</artifactId>
+        </dependency>
+        <!--路由控制-->
+        <dependency>
+            <groupId>com.mitesofor</groupId>
+            <artifactId>smartsite-common-gray</artifactId>
+        </dependency>
+        <!--mybatis-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+        <!-- druid 连接池 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+        </dependency>
+        <!--数据库-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <!--web 模块-->
+        <dependency>
+            <groupId>com.mitesofor</groupId>
+            <artifactId>smartsite-common-gateway</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--undertow容器-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
+        </dependency>
+        <!--即时消息SSE或WEBSOCKET-->
+        <dependency>
+            <groupId>com.mitesofor</groupId>
+            <artifactId>smartsite-message-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!--任务中心
+        <dependency>
+            <groupId>com.mitesofor</groupId>
+            <artifactId>smartsite-common-job</artifactId>
+        </dependency>-->
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <skip>false</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
