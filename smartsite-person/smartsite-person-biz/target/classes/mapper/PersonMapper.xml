@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mitesofor.smartsite.person.biz.mapper.PersonMapper">
+
+    <sql id="PAGING_START">
+       	<![CDATA[
+
+        ]]>
+	</sql>
+
+    <sql id="PAGING_END">
+       	<![CDATA[
+        LIMIT #{currentIndex}, #{size}
+        ]]>
+	</sql>
+
+    <sql id = "SELECT_PARAMETER">
+        <where>
+            <if test = "personName != null and personName != ''">
+                and p.person_name = #{personName}
+            </if>
+            <if test = "personId != null and personId != ''">
+                and p.person_id = #{personId}
+            </if>
+            <if test = "age != null and age != ''">
+                and p.age = #{age}
+            </if>
+            <if test = "gender != null and gender != ''">
+                and p.gender = #{gender}
+            </if>
+            <if test = "phone != null and phone != ''">
+                and p.phone = #{phone}
+            </if>
+            <if test = "nationality != null and nationality != ''">
+                and p.nationality = #{nationality}
+            </if>
+            <if test = "birthplace != null and birthplace != ''">
+                and p.birthplace = #{birthplace}
+            </if>
+            <if test = "homeAddress != null and homeAddress != ''">
+                and p.home_address = #{homeAddress}
+            </if>
+            <if test = "company != null and company != ''">
+                and p.company = #{company}
+            </if>
+            <if test = "team != null and team != ''">
+                and p.team = #{team}
+            </if>
+            <if test = "politicalStatus != null and politicalStatus != ''">
+                and p.political_status = #{politicalStatus}
+            </if>
+            <if test = "education != null and education != ''">
+                and p.education = #{education}
+            </if>
+            <if test = "job != null and job != ''">
+                and p.job = #{job}
+            </if>
+            <if test = "jobType != null and jobType != ''">
+                and p.job_type = #{jobType}
+            </if>
+            <if test = "facePhoto != null and facePhoto != ''">
+                and p.face_photo = #{facePhoto}
+            </if>
+            <if test = "idCardPhotoFront != null and idCardPhotoFront != ''">
+                and p.id_card_photo_front = #{idCardPhotoFront}
+            </if>
+            <if test = "idCardPhotoBack != null and idCardPhotoBack != ''">
+                and p.id_card_photo_back = #{idCardPhotoBack}
+            </if>
+            <if test = "location != null and location != ''">
+                and p.location = #{location}
+            </if>
+            <if test = "emergencyContactNumber != null and emergencyContactNumber != ''">
+                and p.emergency_contact_number = #{emergencyContactNumber}
+            </if>
+            <if test = "licenseType != null and licenseType != ''">
+                and p.license_type = #{licenseType}
+            </if>
+            <if test = "licenseId != null and licenseId != ''">
+                and p.license_id = #{licenseId}
+            </if>
+            <if test = "licensePhoto != null and licensePhoto != ''">
+                and p.license_photo = #{licensePhoto}
+            </if>
+            <if test = "validityPeriod != null and validityPeriod != ''">
+                and p.validity_period = #{validityPeriod}
+            </if>
+            <if test = "isChecked != null and isChecked != ''">
+                and p.is_checked = #{isChecked}
+            </if>
+            <if test = "memo != null and memo != ''">
+                and p.memo = #{memo}
+            </if>
+            <if test = "createTime != null and createTime != ''">
+                and p.create_time = #{createTime}
+            </if>
+
+            and p.is_delete = 0
+        </where>
+    </sql>
+    <sql id = "SELECT_PARAMETER_LIKE">
+        <where>
+            <if test = "person.personName != null and person.personName != ''">
+                and p.person_name like concat('%', #{person.personName}, '%')
+            </if>
+            <if test = "person.personId != null and person.personId != ''">
+                and p.person_id like concat('%', #{person.personId}, '%')
+            </if>
+            <if test = "person.age != null and person.age != ''">
+                and p.age like concat('%', #{person.age}, '%')
+            </if>
+            <if test = "person.gender != null and person.gender != ''">
+                and p.gender like concat('%', #{person.gender}, '%')
+            </if>
+            <if test = "person.phone != null and person.phone != ''">
+                and p.phone like concat('%', #{person.phone}, '%')
+            </if>
+            <if test = "person.nationality != null and person.nationality != ''">
+                and p.nationality like concat('%', #{person.nationality}, '%')
+            </if>
+            <if test = "person.birthplace != null and person.birthplace != ''">
+                and p.birthplace like concat('%', #{person.birthplace}, '%')
+            </if>
+            <if test = "person.homeAddress != null and person.homeAddress != ''">
+                and p.home_address like concat('%', #{person.homeAddress}, '%')
+            </if>
+            <if test = "person.company != null and person.company != ''">
+                and p.company like concat('%', #{person.company}, '%')
+            </if>
+            <if test = "person.team != null and person.team != ''">
+                and p.team like concat('%', #{person.team}, '%')
+            </if>
+            <if test = "person.politicalStatus != null and person.politicalStatus != ''">
+                and p.political_status like concat('%', #{person.politicalStatus}, '%')
+            </if>
+            <if test = "person.education != null and person.education != ''">
+                and p.education like concat('%', #{person.education}, '%')
+            </if>
+            <if test = "person.job != null and person.job != ''">
+                and p.job like concat('%', #{person.job}, '%')
+            </if>
+            <if test = "person.jobType != null and person.jobType != ''">
+                and p.job_type like concat('%', #{person.jobType}, '%')
+            </if>
+            <if test = "person.facePhoto != null and person.facePhoto != ''">
+                and p.face_photo like concat('%', #{person.facePhoto}, '%')
+            </if>
+            <if test = "person.idCardPhotoFront != null and person.idCardPhotoFront != ''">
+                and p.id_card_photo_front like concat('%', #{person.idCardPhotoFront}, '%')
+            </if>
+            <if test = "person.idCardPhotoBack != null and person.idCardPhotoBack != ''">
+                and p.id_card_photo_back like concat('%', #{person.idCardPhotoBack}, '%')
+            </if>
+            <if test = "person.location != null and person.location != ''">
+                and p.location like concat('%', #{person.location}, '%')
+            </if>
+            <if test = "person.emergencyContactNumber != null and person.emergencyContactNumber != ''">
+                and p.person.emergency_contact_number  like concat('%', #{person.emergencyContactNumber}, '%')
+            </if>
+            <if test = "person.memo != null and person.memo != ''">
+                and p.person.memo like concat('%',  #{person.memo}, '%')
+            </if>
+            <if test = "person.licenseType != null and person.licenseType != ''">
+                and p.license_type like concat('%',  #{person.licenseType}, '%')
+            </if>
+            <if test = "person.licenseId != null and person.licenseId != ''">
+                and p.license_id like concat('%',  #{person.licenseId}, '%')
+            </if>
+            <if test = "person.licensePhoto != null and person.licensePhoto != ''">
+                and p.license_photo like concat('%',  #{person.licensePhoto}, '%')
+            </if>
+            <if test = "person.validityPeriod != null and person.validityPeriod != ''">
+                and p.validity_period like concat('%',  #{person.validityPeriod}, '%')
+            </if>
+            <if test = "person.isChecked != null and person.isChecked != ''">
+                and p.is_checked like concat('%',  #{person.isChecked}, '%')
+            </if>
+            <if test = "person.projectId != null and person.projectId != ''">
+                and p.project_id like concat('%', #{person.projectId}, '%')
+            </if>
+            <if test = "person.createTime != null and person.createTime != ''">
+                and p.create_time like concat('%', #{person.createTime}, '%')
+            </if>
+            and p.is_delete = 0
+        </where>
+    </sql>
+    <update id = "update" parameterType="com.mitesofor.smartsite.person.api.entity.Person">
+        update person AS p
+        <set>
+            <if test = "personName != null">
+                p.person_name = #{personName},
+            </if>
+            <if test = "personId != null">
+                p.person_id = #{personId},
+            </if>
+            <if test = "age != null">
+                p.age = #{age},
+            </if>
+            <if test = "gender != null">
+                p.gender = #{gender},
+            </if>
+            <if test = "phone != null">
+                p.phone = #{phone},
+            </if>
+            <if test = "nationality != null">
+                p.nationality = #{nationality},
+            </if>
+            <if test = "birthplace != null">
+                p.birthplace = #{birthplace},
+            </if>
+            <if test = "homeAddress != null">
+                p.home_address = #{homeAddress},
+            </if>
+            <if test = "company != null">
+                p.company = #{company},
+            </if>
+            <if test = "team != null">
+                p.team = #{team},
+            </if>
+            <if test = "politicalStatus != null">
+                p.political_status = #{politicalStatus},
+            </if>
+            <if test = "education != null">
+                p.education = #{education},
+            </if>
+            <if test = "job != null">
+                p.job = #{job},
+            </if>
+            <if test = "jobType != null">
+                p.job_type = #{jobType},
+            </if>
+            <if test = "facePhoto != null">
+                p.face_photo = #{facePhoto},
+            </if>
+            <if test = "idCardPhotoFront != null">
+                p.id_card_photo_front = #{idCardPhotoFront},
+            </if>
+            <if test = "idCardPhotoBack != null">
+                p.id_card_photo_back = #{idCardPhotoBack},
+            </if>
+            <if test = "location != null">
+                p.location = #{location},
+            </if>
+            <if test = "emergencyContactNumber != null">
+                p.emergency_contact_number = #{emergencyContactNumber},
+            </if>
+            <if test = "licenseType != null">
+                p.license_type = #{licenseType},
+            </if>
+            <if test = "licenseId != null">
+                p.license_id = #{licenseId},
+            </if>
+            <if test = "licensePhoto != null">
+                p.license_photo = #{licensePhoto},
+            </if>
+            <if test = "validityPeriod != null">
+                p.validity_period = #{validityPeriod},
+            </if>
+            <if test = "isChecked != null">
+                p.is_checked = #{isChecked},
+            </if>
+            <if test = "memo != null ">
+                p.memo = #{memo},
+            </if>
+            <if test = "projectId != null">
+                p.project_id = #{projectId},
+            </if>
+            <if test = "createTime != null">
+                p.create_time = #{createTime},
+            </if>
+        </set>
+        where id = #{id} and is_delete = 0
+    </update>
+
+    <sql id = "SELECT_CONTENT">
+        select p.id, p.person_id, p.person_name, p.age, p.gender, p.phone, p.nationality, p.birthplace,
+               p.home_address, p.company, p.team, p.political_status, p.education, p.job, p.job_type,
+               p.face_photo, p.id_card_photo_front, p.id_card_photo_back, p.location, p.emergency_contact_number,
+               p.memo, p.license_type, p.license_id, p.license_photo, p.validity_period, p.is_checked,
+               p.project_id, p.create_time,
+    </sql>
+    <delete id="delete" parameterType="com.mitesofor.smartsite.person.api.entity.Person">
+        delete from person AS p
+        <include refid="SELECT_PARAMETER"/>
+    </delete>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        update person AS p set p.is_delete = 1
+        where id = #{id};
+    </delete>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.mitesofor.smartsite.person.api.entity.Person">
+        select * from person AS p
+        where id = #{id} and is_delete = 0
+    </select>
+
+    <select id="selectByExample" parameterType="com.mitesofor.smartsite.person.api.entity.Person" resultType="com.mitesofor.smartsite.person.api.entity.Person">
+        select * from person AS p
+        <include refid="SELECT_PARAMETER"/>
+    </select>
+
+    <select id="selectAll" resultType="com.mitesofor.smartsite.person.api.entity.Person">
+        select * from person AS p
+        where is_delete = 0
+    </select>
+
+    <select id="selectByPage" resultType="com.mitesofor.smartsite.person.api.vo.PersonVO" >
+<!--        <include refid="PAGING_START"/>-->
+        <include refid="SELECT_CONTENT"/>
+        pro.name AS project_name
+        from person AS p left join
+        project_management AS pro
+        on p.project_id = pro.id
+        <include refid="SELECT_PARAMETER_LIKE"/>
+<!--        <include refid="PAGING_END"/>-->
+    </select>
+</mapper>

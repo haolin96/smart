@@ -1,0 +1,10 @@
+com\mitesofor\smartsite\person\api\dto\PersonDto.class
+com\mitesofor\smartsite\person\api\dto\PersonInAndOutInfo.class
+com\mitesofor\smartsite\person\api\entity\Job.class
+com\mitesofor\smartsite\person\api\vo\PersonInAndOutVO.class
+com\mitesofor\smartsite\person\api\dto\PersonAgeStat.class
+com\mitesofor\smartsite\person\api\vo\PersonVO.class
+com\mitesofor\smartsite\person\api\entity\Person.class
+com\mitesofor\smartsite\person\api\dto\PersonInAndOutStat.class
+com\mitesofor\smartsite\person\api\dto\PersonJobStat.class
+com\mitesofor\smartsite\person\api\entity\PersonInAndOut.class

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mitesofor.smartsite.person.biz.mapper.PersonInAndOutMapper">
+<!--    <sql id="PAGING_START">-->
+<!--       	<![CDATA[-->
+
+<!--        ]]>-->
+<!--	</sql>-->
+
+<!--    <sql id="PAGING_END">-->
+<!--       	<![CDATA[-->
+<!--        LIMIT #{currentIndex}, #{size}-->
+<!--        ]]>-->
+<!--	</sql>-->
+
+    <sql id = "ORDER_BY">
+        order by I.in_or_out_time DESC
+    </sql>
+
+    <sql id = "SELECT_PARAMETER">
+        <where>
+            <if test = "personName != null and personName != ''">
+                and I.person_name = #{personName}
+            </if>
+            <if test = "personId != null and personId != ''">
+                and I.person_id = #{personId}
+            </if>
+<!--            <if test = "inOrOutTime != null and inOrOutTime != ''">-->
+<!--                and I.in_or_out_time = #{inOrOutTime}-->
+<!--            </if>-->
+            <if test = "entranceId != null and entranceId != ''">
+                and I.entrance_id = #{entranceId}
+            </if>
+            <if test = "inOrOut != null and inOrOut != ''">
+                and I.in_or_out = #{inOrOut}
+            </if>
+            <if test = "faceInoutPhoto != null and faceInoutPhoto != ''">
+                and I.face_inout_photo = #{faceInoutPhoto}
+            </if>
+            <if test = "isRegistered != null and isRegistered != ''">
+                and I.is_registered = #{isRegistered}
+            </if>
+            <if test = "presenceStatus != null and presenceStatus != ''">
+                and I.presence_status = #{presenceStatus}
+            </if>
+            <if test = "similarity != null and similarity != ''">
+                and I.similarity = #{similarity}
+            </if>
+            <if test = "photoPlace != null and photoPlace != ''">
+                and I.photo_place = #{photoPlace}
+            </if>
+            and I.is_delete = 0
+        </where>
+    </sql>
+    <sql id = "SELECT_PARAMETER_LIKE">
+        <where>
+            <if test = "personInAndOut.personName != null and personInAndOut.personName != ''">
+                and I.person_name like concat('%', #{personInAndOut.personName}, '%')
+            </if>
+            <if test = "personInAndOut.personId != null and personInAndOut.personId != ''">
+                and I.person_id like concat('%', #{personInAndOut.personId}, '%')
+            </if>
+            <if test = "personInAndOut.inOrOutTime != null and personInAndOut.inOrOutTime != ''">
+                and I.in_or_out_time like concat('%', #{personInAndOut.inOrOutTime}, '%')
+            </if>
+            <if test = "personInAndOut.entranceId != null and personInAndOut.entranceId != ''">
+                and I.entrance_id like concat('%', #{personInAndOut.entranceId}, '%')
+            </if>
+<!--            <if test = "personInAndOut.inOrOut != null and personInAndOut.inOrOut != ''">-->
+<!--                and I.in_or_out like concat('%', #{personInAndOut.inOrOut}, '%')-->
+<!--            </if>-->
+            <if test = "personInAndOut.faceInoutPhoto != null and personInAndOut.faceInoutPhoto != ''">
+                and I.face_inout_photo like concat('%', #{personInAndOut.faceInoutPhoto}, '%')
+            </if>
+            <if test = "personInAndOut.isRegistered != null and personInAndOut.isRegistered != ''">
+                and I.is_registered like concat('%', #{isRegistered}, '%')
+            </if>
+            <if test = "personInAndOut.presenceStatus != null and personInAndOut.presenceStatus != ''">
+                and I.presence_status like concat('%', #{personInAndOut.presenceStatus}, '%')
+            </if>
+            <if test = "personInAndOut.similarity != null and personInAndOut.similarity != ''">
+                and I.similarity like concat('%', #{personInAndOut.similarity}, '%')
+            </if>
+            <if test = "personInAndOut.photoPlace != null and personInAndOut.photoPlace != ''">
+                and I.photo_place like concat('%', #{personInAndOut.photoPlace}, '%')
+            </if>
+        </where>
+    </sql>
+    <update id = "update" parameterType="com.mitesofor.smartsite.person.api.entity.PersonInAndOut">
+        update person_in_and_out AS I
+        <set>
+            <if test = "personName != null">
+                I.person_name = #{personName},
+            </if>
+            <if test = "personId != null">
+                I.person_id = #{personId},
+            </if>
+            <if test = "inOrOutTime != null">
+                I.in_or_out_time = #{inOrOutTime},
+            </if>
+            <if test = "entranceId != null">
+                I.entrance_id = #{entranceId},
+            </if>
+            <if test = "inOrOut != null">
+                I.in_or_out = #{inOrOut},
+            </if>
+            <if test = "faceInoutPhoto != null">
+                I.face_inout_photo = #{faceInoutPhoto},
+            </if>
+            <if test = "isRegistered != null">
+                I.is_registered = #{isRegistered},
+            </if>
+            <if test = "presenceStatus != null">
+                I.presence_status = #{presenceStatus},
+            </if>
+            <if test = "similarity != null">
+                I.similarity = #{similarity},
+            </if>
+            <if test = "photoPlace != null">
+                I.photo_place = #{photoPlace},
+            </if>
+        </set>
+        where id = #{id} and is_delete = 0
+    </update>
+
+    <sql id = "SELECT_CONTENT">
+        select I.id, I.person_name, I.person_id, I.in_or_out_time, I.entrance_id, I.in_or_out, I.face_inout_photo, I.is_registered, I.presence_status, I.similarity, I.photo_place,
+               p.age, p.gender, p.phone, p.nationality, p.birthplace, p.face_photo,
+               p.home_address, p.company, p.team, p.political_status, p.education, p.job, p.job_type,
+               p.id_card_photo_front, p.id_card_photo_back, p.location, p.emergency_contact_number,
+               p.memo, p.project_id
+        from person_in_and_out AS I left join person AS p
+        on I.person_id = p.person_id
+    </sql>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        update person_in_and_out AS I set is_delete = 1
+        where id = #{id}
+    </delete>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.mitesofor.smartsite.person.api.entity.PersonInAndOut">
+        select * from person_in_and_out AS I
+        where id = #{id} and is_delete = 0
+    </select>
+
+    <select id="selectByExample" parameterType="com.mitesofor.smartsite.person.api.entity.PersonInAndOut" resultType="com.mitesofor.smartsite.person.api.entity.PersonInAndOut">
+        select * from person_in_and_out AS I
+        <include refid="SELECT_PARAMETER"/>
+    </select>
+
+    <select id="selectByPage" resultType="com.mitesofor.smartsite.person.api.vo.PersonInAndOutVO" >
+<!--        <include refid="PAGING_START"/>-->
+        <include refid="SELECT_CONTENT"/>
+        <where>
+            <if test = "personInAndOut.personName != null and personInAndOut.personName != ''">
+                and I.person_name like concat('%', #{personInAndOut.personName}, '%')
+            </if>
+            <if test = "personInAndOut.photoPlace != null and personInAndOut.photoPlace != ''">
+                and I.photo_place like concat('%', #{personInAndOut.photoPlace}, '%')
+            </if>
+            <if test = "startTime != null">
+                and I.in_or_out_time <![CDATA[>=]]> #{startTime}
+            </if>
+            <if test = "endTime != null">
+                and I.in_or_out_time <![CDATA[<=]]> #{endTime}
+            </if>
+            and Date(I.in_or_out_time) <![CDATA[<=]]> Date(now())
+            and I.is_delete = 0
+        </where>
+        <include refid="ORDER_BY"/>
+<!--        <include refid="PAGING_END"/>-->
+    </select>
+
+    <select id = "selectBySevenDays" resultType="com.mitesofor.smartsite.person.api.entity.PersonInAndOut">
+        select * from person_in_and_out AS I
+        where I.is_registered = 1 and I.in_or_out = 1 and I.in_or_out_time >= DATE_SUB(Now(), INTERVAL 7 DAY)
+    </select>
+
+    <select id="selectLatestIn" resultType="com.mitesofor.smartsite.person.api.vo.PersonInAndOutVO">
+        <include refid="SELECT_CONTENT"/>
+        where I.in_or_out = 1 and I.is_delete = 0
+        and Date(I.in_or_out_time) <![CDATA[<=]]> Date(Now())
+        order by I.in_or_out_time DESC
+        limit 1
+    </select>
+
+    <select id="selectLatestOut" resultType="com.mitesofor.smartsite.person.api.vo.PersonInAndOutVO">
+        <include refid="SELECT_CONTENT"/>
+        where I.in_or_out = 0 and I.is_delete = 0
+        and Date(I.in_or_out_time) <![CDATA[<=]]> Date(Now())
+        order by I.in_or_out_time DESC
+        limit 1
+    </select>
+
+</mapper>
